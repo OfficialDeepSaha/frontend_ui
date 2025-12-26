@@ -143,15 +143,21 @@ export default function App() {
                             <div className="prose prose-invert prose-sm max-w-none leading-relaxed" dangerouslySetInnerHTML={{ __html: u.content_html }} />
                           </div>
                           {Array.isArray(u.references) && u.references.length > 0 && (
-                            <div className="mt-1">
-                              <div className="flex items-center justify-between gap-2 mb-1">
-                                <strong className="text-sm">References</strong>
+                            <div className="refs mt-3">
+                              <div className="refs-head">
+                                <strong className="text-sm font-medium">References</strong>
                                 <span className="text-slate-400 text-xs">{u.references.length} links</span>
                               </div>
-                              <ul className="list-disc list-inside space-y-1 text-sm text-accent-400">
+                              <ul className="space-y-2 text-sm">
                                 {u.references.map((r, idx) => (
-                                  <li key={idx}>
-                                    <a href={r} target="_blank" rel="noreferrer" className="hover:text-white transition">
+                                  <li key={idx} className="flex items-start gap-2">
+                                    <span className="text-accent-400 mt-1 text-xs">•</span>
+                                    <a 
+                                      href={r} 
+                                      target="_blank" 
+                                      rel="noreferrer" 
+                                      className="text-accent-400 hover:text-white transition-colors duration-200 break-all leading-relaxed"
+                                    >
                                       {r}
                                     </a>
                                   </li>
