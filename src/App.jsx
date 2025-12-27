@@ -41,139 +41,216 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-surface-900 bg-hero-grid text-slate-100 flex items-center justify-center">
-        <div className="text-lg text-slate-200">Loading articles…</div>
+      <div className="min-h-screen bg-surface-950 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-6 animate-fade-in">
+          <div className="w-12 h-12 rounded-full border-2 border-accent-500 border-t-transparent animate-spin" />
+          <div className="text-xl text-slate-400 font-display tracking-wide animate-pulse-slow">Initializing content stream...</div>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-surface-900 bg-hero-grid text-slate-100 flex items-center justify-center">
-        <div className="bg-red-500/10 border border-red-500/30 text-red-100 px-4 py-3 rounded-xl">
-          {error}
+      <div className="min-h-screen bg-surface-950 flex items-center justify-center p-4">
+        <div className="bg-red-500/10 border border-red-500/20 text-red-200 px-8 py-6 rounded-2xl backdrop-blur-md max-w-md w-full text-center shadow-lg transform transition-all hover:scale-105">
+          <div className="text-2xl font-bold mb-2 font-display">Connection Error</div>
+          <p className="opacity-80 font-body">{error}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 bg-hero-grid text-slate-100">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <header className="flex flex-col lg:flex-row gap-4 lg:gap-6 items-start justify-between mb-8">
-          <div>
-            <p className="text-sm uppercase tracking-[0.25em] text-slate-400 font-semibold">BeyondChats</p>
-            <h1 className="text-3xl sm:text-4xl font-semibold font-display tracking-tight mt-2">Articles & AI Enriched Versions</h1>
-            <p className="text-slate-400 mt-2 max-w-2xl">
-              Browse the original scraped articles and their AI-updated versions with cited references.
+    <div className="min-h-screen bg-surface-950 text-slate-100 font-body selection:bg-accent-500/30 overflow-x-hidden">
+      {/* Dynamic Background */}
+      <div className="fixed inset-0 bg-hero-gradient pointer-events-none opacity-60" />
+      <div className="fixed top-0 left-1/4 w-[600px] h-[600px] bg-accent-600/10 blur-[120px] rounded-full pointer-events-none mix-blend-screen animate-float" />
+      <div className="fixed bottom-0 right-1/4 w-[500px] h-[500px] bg-mint-500/10 blur-[100px] rounded-full pointer-events-none mix-blend-screen animate-float" style={{ animationDelay: '-3s' }} />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 lg:py-24">
+
+        {/* Hero Section */}
+        <header className="flex flex-col md:flex-row gap-12 items-end justify-between mb-24 animate-slide-up">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-glass-100 border border-glass-200 backdrop-blur-md mb-8 transition hover:bg-glass-200 cursor-default">
+              <span className="w-2 h-2 rounded-full bg-mint-400 animate-pulse" />
+              <span className="text-xs font-bold tracking-widest uppercase text-mint-400">System Online</span>
+            </div>
+            <h1 className="text-6xl sm:text-7xl lg:text-8xl font-bold font-display tracking-tight text-white mb-8 leading-[0.9]">
+              Content <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 via-accent-300 to-mint-400 text-glow">Intelligence.</span>
+            </h1>
+            <p className="text-xl text-slate-400 leading-relaxed max-w-2xl border-l-2 border-accent-500/30 pl-6">
+              Access the complete archive of scraped articles and their AI-enhanced versions, powered by our advanced context-aware pipeline.
             </p>
           </div>
-          <div className="bg-slate-900/70 border border-white/5 rounded-2xl px-4 py-3 shadow-glow min-w-[240px]">
-            <div className="inline-flex items-center gap-2 text-xs text-slate-200 border border-white/10 rounded-full px-2 py-1 mb-2">
-              <span className="w-2 h-2 rounded-full bg-mint-400 animate-pulse" />
-              Live API
+
+          <div className="w-full md:w-auto">
+            <div className="bg-glass-100 border border-glass-200 backdrop-blur-xl rounded-3xl p-8 shadow-2xl transition hover:transform hover:-translate-y-1 duration-500">
+              <div className="flex gap-12">
+                <div className="text-center">
+                  <div className="text-4xl font-bold font-display text-white mb-1">{originals.length}</div>
+                  <div className="text-xs text-slate-500 font-bold uppercase tracking-widest">Originals</div>
+                </div>
+                <div className="w-px bg-glass-200" />
+                <div className="text-center">
+                  <div className="text-4xl font-bold font-display text-accent-400 mb-1">{updates.length}</div>
+                  <div className="text-xs text-slate-500 font-bold uppercase tracking-widest">Enhanced</div>
+                </div>
+              </div>
             </div>
-            <p className="text-slate-300 text-sm">
-              Connected to <span className="text-white font-semibold">{import.meta.env.VITE_API_URL}</span>
-            </p>
-            <p className="text-slate-400 text-sm mt-1">Originals: {originals.length} • Updates: {updates.length}</p>
           </div>
         </header>
 
+        {/* Content Feed */}
         {originals.length === 0 ? (
-          <div className="bg-slate-900/60 border border-white/5 rounded-2xl p-10 text-center text-slate-300">
-            <p className="text-lg font-semibold text-white mb-2">No articles found</p>
-            <p className="text-sm text-slate-400">
-              Once the scraper ingests BeyondChats posts you will see the originals and their updated versions here.
-            </p>
+          <div className="flex flex-col items-center justify-center py-32 text-center animate-fade-in delay-200 bg-glass-100 rounded-3xl border border-glass-200 border-dashed">
+            <div className="w-20 h-20 rounded-full bg-surface-800 border-2 border-surface-700 flex items-center justify-center mb-8">
+              <span className="text-3xl opacity-30">⚡</span>
+            </div>
+            <p className="text-2xl font-bold text-white mb-2 font-display">No articles indexed</p>
+            <p className="text-slate-500 max-w-md">The system is waiting for the scraper. Run the backend services to ingest content.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5">
-            {originals.map((a) => (
-              <article key={a.id} className="bg-slate-900/70 border border-white/5 rounded-2xl p-5 shadow-glow backdrop-blur space-y-3">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="inline-flex items-center gap-2 text-xs border border-white/10 rounded-full px-3 py-1 text-slate-100 bg-white/5">
-                    <span className="w-2 h-2 rounded-full bg-accent-500" />
-                    Original
-                  </div>
-                  <div className="text-slate-400 text-xs">ID #{a.id}</div>
-                </div>
+          <div className="grid grid-cols-1 gap-12">
+            {originals.map((article, idx) => {
+              const articleUpdates = updatesByOriginal.get(article.id) || [];
+              return (
+                <div
+                  key={article.id}
+                  className="group relative bg-surface-900/60 border border-glass-200 rounded-[2rem] p-8 sm:p-12 transition-all duration-500 hover:bg-surface-800/80 hover:border-accent-500/30 hover:shadow-glow-hover backdrop-blur-sm animate-slide-up"
+                  style={{ animationDelay: `${idx * 150}ms` }}
+                >
+                  <div className="flex flex-col xl:flex-row gap-12 xl:gap-16">
+                    {/* Source Article */}
+                    <div className="flex-1 min-w-0 flex flex-col">
+                      <div className="flex items-center gap-4 mb-6">
+                        <span className="px-3 py-1 rounded-full bg-glass-200 text-xs font-mono text-slate-400 border border-glass-300">
+                          #{article.id.toString().padStart(3, '0')}
+                        </span>
+                        <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Original Source</span>
+                      </div>
 
-                <div className="space-y-1">
-                  {a.source_url && (
-                    <a href={a.source_url} target="_blank" rel="noreferrer" className="text-accent-400 text-sm hover:text-white clamp-2">
-                      {a.source_url}
-                    </a>
-                  )}
-                  <h2 className="text-xl font-semibold tracking-tight clamp-2">{a.title || 'Untitled article'}</h2>
-                  {a.summary && <p className="text-slate-300 text-sm clamp-2">{a.summary}</p>}
-                </div>
+                      <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6 font-display group-hover:text-accent-300 transition-colors leading-tight">
+                        {article.title || 'Untitled Article'}
+                      </h2>
 
-                <div className="content-preview rounded-xl overflow-hidden border border-white/5">
-                  <div className="prose prose-invert prose-sm max-w-none leading-relaxed" dangerouslySetInnerHTML={{ __html: a.content_html }} />
-                </div>
+                      {article.summary && (
+                        <p className="text-slate-400 text-lg leading-relaxed mb-8 border-l-2 border-surface-700 pl-4 group-hover:border-accent-500/50 transition-colors duration-500">
+                          {article.summary}
+                        </p>
+                      )}
 
-                {updatesByOriginal.get(a.id)?.length > 0 ? (
-                  <div className="mt-1 border-t border-white/5 pt-3 space-y-3">
-                    <div className="flex items-center justify-between gap-2">
-                      <h3 className="text-base font-semibold">Updated Versions</h3>
-                      <div className="inline-flex items-center gap-1 text-xs border border-white/10 rounded-full px-2 py-1 text-slate-100 bg-white/5">
-                        {updatesByOriginal.get(a.id).length} versions
+                      <div className="mt-auto pt-8 flex items-center gap-4">
+                        {article.source_url && (
+                          <a
+                            href={article.source_url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-white transition-colors"
+                          >
+                            <span>SOURCE LINK</span>
+                            <span className="text-lg">↗</span>
+                          </a>
+                        )}
+                        <span className="h-4 w-px bg-glass-200" />
+                        <span className="text-sm text-slate-600">
+                          {article.content_text ? `${Math.ceil(article.content_text.length / 500)} min read` : 'Unknown read time'}
+                        </span>
                       </div>
                     </div>
-                    <div className="space-y-3">
-                      {updatesByOriginal.get(a.id).map((u) => (
-                        <Link
-                          key={u.id}
-                          to={`/updates/${u.id}`}
-                          className="bg-slate-900/80 border border-white/5 rounded-xl p-3 shadow-inner space-y-2 text-left w-full hover:border-mint-400/60 transition block"
-                        >
-                          <div className="flex items-center justify-between gap-2">
-                            <div className="inline-flex items-center gap-2 text-xs border border-mint-400/40 text-mint-400 rounded-full px-2.5 py-1 bg-mint-400/5">
-                              <span className="w-2 h-2 rounded-full bg-mint-400" />
-                              Updated
-                            </div>
-                            <span className="text-slate-400 text-xs">ID #{u.id}</span>
+
+                    {/* Versions Column */}
+                    <div className="xl:w-[420px] flex-shrink-0 flex flex-col gap-6 pt-8 xl:pt-0 xl:border-l xl:border-glass-200 xl:pl-16 relative">
+                      {/* Decorative connecting line for desktop */}
+                      <div className="hidden xl:block absolute top-12 -left-[65px] w-[65px] h-[2px] bg-gradient-to-r from-transparent to-glass-300" />
+
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="flex h-2 w-2 relative">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-500"></span>
+                          </span>
+                          <span className="text-xs font-bold uppercase tracking-widest text-accent-300">
+                            AI Enhancements
+                          </span>
+                        </div>
+                        {articleUpdates.length > 0 && (
+                          <div className="px-2 py-0.5 rounded bg-glass-200 border border-glass-300 text-[10px] font-mono text-slate-400 uppercase tracking-wider">
+                            {articleUpdates.length} Generated
                           </div>
-                          <div className="space-y-1">
-                            <h4 className="text-lg font-semibold clamp-2">{u.title || 'Updated article'}</h4>
-                            {u.summary && <p className="text-slate-400 text-sm clamp-3">{u.summary}</p>}
-                          </div>
-                          <div className="content-preview rounded-lg overflow-hidden border border-white/5">
-                            <div className="prose prose-invert prose-sm max-w-none leading-relaxed" dangerouslySetInnerHTML={{ __html: u.content_html }} />
-                          </div>
-                          {Array.isArray(u.references) && u.references.length > 0 && (
-                            <div className="refs mt-3">
-                              <div className="refs-head">
-                                <strong className="text-sm font-medium">References</strong>
-                                <span className="text-slate-400 text-xs">{u.references.length} links</span>
+                        )}
+                      </div>
+
+                      {articleUpdates.length > 0 ? (
+                        <div className="space-y-6">
+                          {articleUpdates.map(u => (
+                            <Link
+                              key={u.id}
+                              to={`/updates/${u.id}`}
+                              className="block bg-gradient-to-br from-glass-100 to-glass-100/50 border border-glass-200 p-1 rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-glow group/card relative overflow-hidden hover:border-accent-500/30"
+                            >
+                              {/* Inner Card Content */}
+                              <div className="bg-surface-900/80 rounded-xl p-5 h-full relative z-10">
+
+                                {/* Header */}
+                                <div className="flex items-center justify-between mb-4 border-b border-glass-200 pb-3">
+                                  <div className="inline-flex items-center gap-2 bg-mint-500/10 border border-mint-500/20 px-2 py-1 rounded-lg">
+                                    <span className="text-xs font-bold text-mint-400">V.{u.id}</span>
+                                  </div>
+                                  <div className="flex items-center gap-1 text-[10px] font-medium text-slate-500 uppercase tracking-wider">
+                                    <span>Ready to Read</span>
+                                    <span className="text-accent-400 opacity-0 group-hover/card:opacity-100 transition-opacity -mr-2 group-hover/card:mr-0">→</span>
+                                  </div>
+                                </div>
+
+                                {/* Title */}
+                                <h3 className="font-display font-semibold text-slate-100 text-lg leading-snug mb-4 group-hover/card:text-accent-200 transition-colors">
+                                  {u.title || 'Enhanced Article Version'}
+                                </h3>
+
+                                {/* AI Tags */}
+                                <div className="flex flex-wrap gap-2 mb-6">
+                                  {['SEO Optimized', 'Structured', '+ References'].map((tag, i) => (
+                                    <span key={i} className="text-[10px] font-medium px-2 py-1 rounded bg-surface-800 border border-glass-200 text-slate-400 group-hover/card:border-accent-500/20 group-hover/card:text-accent-100/70 transition-colors">
+                                      {tag}
+                                    </span>
+                                  ))}
+                                </div>
+
+                                {/* Action Button */}
+                                <div className="w-full py-2.5 rounded-lg bg-accent-600/10 border border-accent-600/20 text-center text-sm font-semibold text-accent-200 group-hover/card:bg-accent-600 group-hover/card:text-white group-hover/card:border-accent-500 transition-all">
+                                  View Enhanced Version
+                                </div>
                               </div>
-                              <ul className="space-y-2 text-sm">
-                                {u.references.map((r, idx) => (
-                                  <li key={idx} className="flex items-start gap-2">
-                                    <span className="text-accent-400 mt-1 text-xs">•</span>
-                                    <a 
-                                      href={r} 
-                                      target="_blank" 
-                                      rel="noreferrer" 
-                                      className="text-accent-400 hover:text-white transition-colors duration-200 break-all leading-relaxed"
-                                    >
-                                      {r}
-                                    </a>
-                                  </li>
-                                ))}
-                              </ul>
+
+                              {/* Hover Glow Effect */}
+                              <div className="absolute inset-0 bg-gradient-to-tr from-accent-600/20 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                            </Link>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="h-full min-h-[220px] flex flex-col items-center justify-center p-8 rounded-2xl border border-dashed border-glass-200 bg-glass-100/30 text-center relative overflow-hidden group">
+                          <div className="absolute inset-0 bg-hero-gradient opacity-20 group-hover:opacity-40 transition-opacity" />
+
+                          <div className="relative z-10 flex flex-col items-center">
+                            <div className="w-16 h-16 mb-4 rounded-full bg-surface-800 border border-glass-200 flex items-center justify-center relative">
+                              <div className="absolute inset-0 rounded-full border border-accent-500/30 animate-ping opacity-20" />
+                              <span className="text-2xl animate-pulse grayscale group-hover:grayscale-0 transition-all">🔮</span>
                             </div>
-                          )}
-                        </Link>
-                      ))}
+                            <p className="text-sm font-semibold text-slate-400 mb-1 group-hover:text-accent-300 transition-colors">Awaiting Analysis</p>
+                            <p className="text-xs text-slate-600 max-w-[200px] leading-relaxed">
+                              Our AI agents are standing by to process this content.
+                            </p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
-                ) : (
-                  <div className="text-slate-400 text-sm">No updated version yet.</div>
-                )}
-              </article>
-            ))}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
